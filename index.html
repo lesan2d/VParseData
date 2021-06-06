@@ -6,61 +6,14 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Document</title>
+    <script src="index.js"></script>
 </head>
-<script>
-    window.addEventListener('load', () => {
-        document.getElementById('upFile').addEventListener('change', async evt => {
-            let fileList = evt.target.files
-            for (let i = 0; i < fileList.length; i++) {
-                printFile(fileList[i]).then(res => {
-                    jsonLinesParse(res)
-                })
-            }
-        })
-    })
-
-    function printFile(file) {
-        return new Promise((resolve, reject) => {
-            var reader = new FileReader();
-            //todo 读取操作被中断
-            reader.onabort = evt => {
-                console.log('读取中断', evt);
-            }
-            //todo 读取操作完成
-            reader.onload = evt => {
-                resolve(evt.target.result)
-            };
-            //todo 读取操作发生错误
-            reader.onerror = evt => {
-                console.log('读取错误', evt);
-                reject('读取错误')
-            }
-            //todo 读取操作开始
-            reader.onloadstart = evt => {
-                console.log('开始读取', evt);
-            }
-            //todo 读取操作结束
-            reader.onloadend = evt => {
-                console.log('读取结束', evt);
-            }
-            //todo 正在读取
-            reader.onprogress = evt => {
-                console.log('正在读取', evt);
-            }
-            reader.readAsText(file);
-        })
-    }
-
-    function jsonLinesParse(jsonLines) {
-        let jsonLinesList = jsonLines.split('\n')
-        let jsonStr = '[' + jsonLinesList.join(',') + ']'
-        // console.log(JSON.parse(jsonStr));
-        console.log(jsonStr);
-    }
-</script>
 
 <body>
-    <input id="upFile" type="file" accept=".json" multiple>
+    <label for="upFile">
+        <span>JSON Lines转JSON格式: </span>
+        <input id="upFile" type="file" accept=".json" multiple>
+    </label>
 </body>
 
 </html>
